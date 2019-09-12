@@ -33,4 +33,15 @@ class AdminProdutCoverController extends ModuleAdminController
         $this->addRowAction('delete');
     }
 
+    public function initPageHeaderToolbar()
+    {
+        $this->page_header_toolbar_btn['new'] = array(
+            'href'  =>  self::$currentIndex . '&add' . $this->table . '&token=' . $this->token,
+            'desc'  =>  $this->module->l('Add new cover'),
+            'icon'  =>  'process-icon-new'
+        );
+
+        parent::initPageHeaderToolbar();
+    }
+
 }
