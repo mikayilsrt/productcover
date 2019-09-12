@@ -32,6 +32,8 @@ class ProductCover extends Module
 {
     protected $config_form = false;
 
+    public $tabs = array();
+
     public function __construct()
     {
         $this->name = 'productCover';
@@ -46,6 +48,19 @@ class ProductCover extends Module
         $this->bootstrap = true;
 
         parent::__construct();
+
+        $this->tabs = [
+            [
+                'name'          =>  'Product Cover',
+                'class_name'    =>  'parentProductCover',
+                'parent'        =>  ''
+            ],
+            [
+                'name'          =>  'cover',
+                'class_name'    =>  'adminProdutCover',
+                'parent'        =>  'parentProductCover'
+            ]
+        ];
 
         $this->displayName = $this->l('Product Cover');
         $this->description = $this->l('Module to upload others product covers.');
@@ -62,6 +77,7 @@ class ProductCover extends Module
         Configuration::updateValue('PRODUCTCOVER_LIVE_MODE', false);
 
         return parent::install() &&
+            $this->installModuleTab() &&
             $this->registerHook('header') &&
             $this->registerHook('backOfficeHeader');
     }
@@ -70,7 +86,45 @@ class ProductCover extends Module
     {
         Configuration::deleteByName('PRODUCTCOVER_LIVE_MODE');
 
-        return parent::uninstall();
+        return parent::uninstall() &&
+            $this->installModuleTab(false);
+    }
+
+    /**
+     * Install new tab or remove on Dashboard.
+     *
+     * @param bool $install
+     *
+     * @return bool Status
+     */
+    public function installModuleTab ($install = true)
+    {
+        if ($install)
+        {
+            $languages = Language::getLanguages();
+
+            foreach ($this->tabs as $t) {
+                $tab = new Tab();
+                $tab->module = $this->name;
+                $tab->class_name = $t['class_name'];
+                $tab->id_parent = Tab::getIdFromClassName($t['parent']);
+
+                foreach ($languages as $language) {
+                    $tab->name[$language['id_lang']] = $t['name'];
+                }
+                $tab->save();
+            }
+        } else {
+            foreach ($this->tabs as $t) {
+                $id = Tab::getIdFromClassName($t['class_name']);
+                if ($id) {
+                    $tab = new Tab($id);
+                    $tab->delete();
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
