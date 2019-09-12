@@ -1,22 +1,29 @@
 <?php
 
+require _PS_MODULE_DIR_ . '/productCover/classes/Blanket.php';
+
 class AdminProdutCoverController extends ModuleAdminController
 {
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->bootstrap = true;
 
+        $this->table = Blanket::$definition['table'];
+        $this->identifier = Blanket::$definition['primary'];
+        $this->className = Blanket::class;
+        $this->lang = false;
+
+        parent::__construct();
+
         $this->fields_list = [
-            'id_product' => [
+            'id_product_cover' => [
                 'title' => $this->module->l('ID'),
                 'align' => 'center',
                 'class' => 'fixed-width-xs'
             ],
-            'name' => [
-                'title' =>  $this->module->l('name'),
+            'image' => [
+                'title' =>  $this->module->l('Cover name'),
                 'align' =>  'left'
             ]
         ];

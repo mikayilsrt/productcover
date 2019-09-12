@@ -76,6 +76,8 @@ class ProductCover extends Module
     {
         Configuration::updateValue('PRODUCTCOVER_LIVE_MODE', false);
 
+        require _PS_MODULE_DIR_ . basename(dirname(__FILE__)) . '/sql/install.php';
+
         return parent::install() &&
             $this->installModuleTab() &&
             $this->registerHook('header') &&
@@ -85,6 +87,8 @@ class ProductCover extends Module
     public function uninstall()
     {
         Configuration::deleteByName('PRODUCTCOVER_LIVE_MODE');
+
+        require _PS_MODULE_DIR_ . basename(dirname(__FILE__)) . '/sql/uninstall.php';
 
         return parent::uninstall() &&
             $this->installModuleTab(false);
