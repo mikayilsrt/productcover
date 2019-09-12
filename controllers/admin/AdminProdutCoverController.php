@@ -44,4 +44,14 @@ class AdminProdutCoverController extends ModuleAdminController
         parent::initPageHeaderToolbar();
     }
 
+    public function getContent()
+    {
+        //
+    }
+
+    public function postProcess()
+    {
+        //
+    }
+
 }
