@@ -64,11 +64,6 @@ class AdminProdutCoverController extends ModuleAdminController
      */
     public function renderForm()
     {
-        echo "<pre>";
-        var_dump($this->getProducts());
-        echo "</pre>";
-        die();
-
         $this->fields_form = [
             'legend' => [
                 'title' => $this->module->l('Product Cover Form'),
@@ -91,7 +86,7 @@ class AdminProdutCoverController extends ModuleAdminController
                     'required' => true,
                     'desc' => $this->l('Please select the product to add the covers.'),
                     'options' => [
-                        'query' => [],
+                        'query' => $this->getProducts(),
                         'id' => 'id_option',
                         'name' => 'name',
                     ],
@@ -101,23 +96,27 @@ class AdminProdutCoverController extends ModuleAdminController
                 'title' => $this->l('Save'),
             ]
         ];
+
         return parent::renderForm();
     }
 
+    /**
+     * @return array $results
+     */
     private function getProducts()
     {
         $results = [];
-        $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'product` LEFT JOIN `' . _DB_PREFIX_ . 'product_lang` ON `' . _DB_PREFIX_ . 'product.id_product` = `' . _DB_PREFIX_ . 'product_lang.id_product`';
+        $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'product` LEFT JOIN ' . _DB_PREFIX_ . 'product_lang ON ' . _DB_PREFIX_ . 'product.id_product = ' . _DB_PREFIX_ . 'product_lang.id_product';
 
         $products = Db::getInstance()->executeS($sql);
 
-        foreach($products as $product)
+        foreach($products as $key => $product)
         {
-            $results .= [
-                'id_option' =>  0,
+            array_push($results, [
+                'id_option' =>  $key,
                 'id_product'    =>  $product['id_product'],
                 'name'  =>  $product['name']
-            ];
+            ]);
         }
 
         return $results;
