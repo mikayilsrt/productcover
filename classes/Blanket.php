@@ -17,4 +17,40 @@ class Blanket extends ObjectModel
         ]
     ];
 
+    public function __construct($idProductCover = null, $id_lang = null, $id_shop = null, $translator = null)
+    {
+        parent::__construct($idProductCover, $id_lang, $id_shop);
+    }
+
+    public function add($auto_date = true, $null_values = false)
+    {
+        $context = Context::getContext();
+        $id_shop = $context->shop->id;
+
+        $res = parent::add($auto_date, $null_values);
+        // $res &= Db::getInstance()->execute('
+        //     INSERT INTO `' . _DB_PREFIX_ . 'product_cover` (`id_product`, `image`)
+        //     VALUES(' . (int)$this->id_product . ', ' . (string)$this->image . ')'
+        // );
+
+        $res &= Db::getInstance()->execute("
+            INSERT INTO `" . _DB_PREFIX_ . "product_cover` (`id_product`, `image`)
+            VALUES($product_id, '" . $image_name . "')"
+        );
+
+        var_dump($res);
+        die();
+
+        return true;
+    }
+
+    public function addNewProductCover($product_id, $image_name)
+    {
+        $res = Db::getInstance()->execute("
+            INSERT INTO `" . _DB_PREFIX_ . "product_cover` (`id_product`, `image`)
+            VALUES($product_id, '" . $image_name . "')"
+        );
+
+        return $res;
+    }
 }

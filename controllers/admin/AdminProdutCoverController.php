@@ -46,16 +46,57 @@ class AdminProdutCoverController extends ModuleAdminController
 
     public function getContent()
     {
-        //
+        die('getContent');
+        $this->postProcess();
     }
 
-    /*
     public function postProcess()
     {
-        if((int)Tools::isSubmit('addproduct_cover')) {
+        if (Tools::isSubmit('submitAddproduct_cover'))
+        {
+            $productID = Tools::getValue('PRODUCT_SELECT_NAME_ID');
+            $productImage = Tools::getValue('PRODUCT_COVER_IMAGE');
+
+            if (!empty($productID) && !empty($productImage))
+            {
+                // $_registration_allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
+                // $uploader = new Uploader('PRODUCT_COVER_IMAGE');
+                // $uploader->setName(sha1(microtime()));
+                // $uploader->setAcceptTypes($_registration_allowed_extensions)
+                //     ->setCheckFileSize(Uploader::DEFAULT_MAX_SIZE)
+                //     ->setSavePath(dirname(__DIR__) .  '\..\images')
+                //     ->process();
+
+                // echo "<pre>";
+                // var_dump($_FILES['PRODUCT_COVER_IMAGE']);
+                // echo "</pre>";
+                // die();
+
+                $imageFile = $_FILES['PRODUCT_COVER_IMAGE'];
+
+                if (!empty($imageFile['tmp_name']))
+                {
+                    $allowed = array('gif', 'jpg', 'jpeg', 'png');
+                    $path = dirname(__DIR__) .  '\..\images';
+                    $info = explode('.', strtolower($imageFile['name']));
+                    $newName = sha1(microtime()) . str_replace(' ', '', $imageFile['name']);
+
+                    if (in_array(end($info), $allowed))
+                    {
+                        if (move_uploaded_file($imageFile['tmp_name'], $path . '/' . $newName))
+                        {
+                            $blanket = new Blanket();
+                            $res = $blanket->addNewProductCover($productID, $newName);
+
+                            $this->context->controller->confirmations[] .= $this->l('Cover uploaded.');
+                        } else {
+                            $this->context->controller->errors[] .= $this->l('Error cover not uploaded');
+                        }
+                    }
+                }
+            }
         }
     }
-    */
 
     /**
      * Affichage du formulaire d'ajout / création de l'objet
@@ -82,12 +123,12 @@ class AdminProdutCoverController extends ModuleAdminController
                     'type' => 'select',
                     'lang' => true,
                     'label' => $this->l('Product'),
-                    'name' => 'PRODUCT_SELECT',
+                    'name' => 'PRODUCT_SELECT_NAME_ID',
                     'required' => true,
                     'desc' => $this->l('Please select the product to add the covers.'),
                     'options' => [
                         'query' => $this->getProducts(),
-                        'id' => 'id_option',
+                        'id' => 'id_product',
                         'name' => 'name',
                     ],
                 ],
@@ -106,7 +147,7 @@ class AdminProdutCoverController extends ModuleAdminController
     private function getProducts()
     {
         $results = [];
-        $sql = 'SELECT * FROM `' . _DB_PREFIX_ . 'product` LEFT JOIN ' . _DB_PREFIX_ . 'product_lang ON ' . _DB_PREFIX_ . 'product.id_product = ' . _DB_PREFIX_ . 'product_lang.id_product';
+        $sql = 'SELECT DISTINCT(' . _DB_PREFIX_ . 'product_lang.id_product), ' . _DB_PREFIX_ . 'product_lang.name FROM `' . _DB_PREFIX_ . 'product` LEFT JOIN ' . _DB_PREFIX_ . 'product_lang ON ' . _DB_PREFIX_ . 'product.id_product = ' . _DB_PREFIX_ . 'product_lang.id_product';
 
         $products = Db::getInstance()->executeS($sql);
 
