@@ -29,7 +29,7 @@ class AdminProdutCoverController extends ModuleAdminController
         ];
 
         // display action button on each field.
-        $this->addRowAction('edit');
+        // $this->addRowAction('edit');
         $this->addRowAction('delete');
     }
 
