@@ -3,7 +3,7 @@
 class Blanket extends ObjectModel
 {
 
-    // public $id_product_cover;
+    public $id_product_cover;
     public $id_product;
     public $image;
 
@@ -53,4 +53,12 @@ class Blanket extends ObjectModel
 
         return $res;
     }
+
+    public function delete()
+    {
+        return Db::getInstance()->execute('
+            DELETE FROM `' . _DB_PREFIX_ . 'product_cover` WHERE `id_product_cover` = ' . (int)$this->id_product_cover
+        );
+    }
+
 }

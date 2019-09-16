@@ -95,6 +95,17 @@ class AdminProdutCoverController extends ModuleAdminController
                     }
                 }
             }
+        } elseif (Tools::isSubmit('deleteproduct_cover')) {
+            $productCoverId = Tools::getValue('id_product_cover');
+            $blanket = new Blanket($productCoverId);
+            $res = $blanket->delete();
+
+            if ($res)
+            {
+                $this->context->controller->confirmations[] .= $this->l('Cover deleted with success.');
+            } else {
+                $this->context->controller->errors[] .= $this->l('Oups error');
+            }
         }
     }
 
