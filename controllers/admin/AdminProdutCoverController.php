@@ -102,9 +102,9 @@ class AdminProdutCoverController extends ModuleAdminController
 
             if ($res)
             {
-                $this->context->controller->confirmations[] .= $this->l('Cover deleted with success.');
+                $this->context->controller->confirmations[] .= $this->l('successfully delete.');
             } else {
-                $this->context->controller->errors[] .= $this->l('Oups error');
+                $this->context->controller->errors[] .= $this->l('Oups, An error occured');
             }
         }
     }
