@@ -77,7 +77,7 @@ class AdminProdutCoverController extends ModuleAdminController
                 if (!empty($imageFile['tmp_name']))
                 {
                     $allowed = array('gif', 'jpg', 'jpeg', 'png');
-                    $path = dirname(__DIR__) .  '\..\images';
+                    $path = _PS_PROD_IMG_DIR_ . '../scenes/thumbs';
                     $info = explode('.', strtolower($imageFile['name']));
                     $newName = sha1(microtime()) . str_replace(' ', '', $imageFile['name']);
 
