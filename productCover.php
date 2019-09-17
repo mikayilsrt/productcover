@@ -57,7 +57,7 @@ class ProductCover extends Module
             ],
             [
                 'name'          =>  'cover',
-                'class_name'    =>  'AdminProdutCover',
+                'class_name'    =>  'AdminProductCover',
                 'parent'        =>  'parentProductCover'
             ]
         ];
