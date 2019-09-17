@@ -2,7 +2,7 @@
 
 require _PS_MODULE_DIR_ . '/productCover/classes/Blanket.php';
 
-class AdminProdutCoverController extends ModuleAdminController
+class AdminProductCoverController extends ModuleAdminController
 {
 
     public function __construct()
