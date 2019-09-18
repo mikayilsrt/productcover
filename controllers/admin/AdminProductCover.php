@@ -1,6 +1,6 @@
 <?php
 
-require _PS_MODULE_DIR_ . '/productCover/classes/Blanket.php';
+require_once _PS_MODULE_DIR_  . '/productcover/classes/Blanket.php';
 
 class AdminProductCoverController extends ModuleAdminController
 {
