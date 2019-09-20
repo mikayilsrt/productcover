@@ -7,8 +7,6 @@ PrestaShop module to upload multiple image for any product.
 git clone https://github.com/mikayilsrt/productcover.git
 ``
 
----
-
 ## 🛠️ Add the module hook
 
 For display the data on your front page, you should add this hook.
