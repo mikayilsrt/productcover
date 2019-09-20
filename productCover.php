@@ -81,6 +81,7 @@ class ProductCover extends Module
         return parent::install() &&
             $this->installModuleTab() &&
             $this->registerHook('header') &&
+            $this->registerHook('displayProductCoverImage') &&
             $this->registerHook('backOfficeHeader');
     }
 
@@ -263,6 +264,52 @@ class ProductCover extends Module
             $this->context->controller->addJS($this->_path.'views/js/back.js');
             $this->context->controller->addCSS($this->_path.'views/css/back.css');
         }
+    }
+
+    /**
+     * Display the product cover image by product id.
+     *
+     * @param array $params
+     *
+     * @return file hook file.
+     */
+    public function hookDisplayProductCoverImage($params)
+    {
+        $this->context->smarty->assign(
+            'product_cover',
+            $this->getProductCover($params['id_customer'])
+        );
+
+        return $this->display(__FILE__, 'productcover.tpl');
+    }
+
+    /**
+     * Get all product cover uploaded by product_id
+     *
+     * @param int $product_id
+     *
+     * @return Array $list of product cover.
+     */
+    public function getProductCover($product_id)
+    {
+        $coverArray = [];
+        $product_covers = Db::getInstance()->executeS('
+            SELECT image as product_cover
+            FROM ' . _DB_PREFIX_ . 'product_cover
+            WHERE id_product = ' . $product_id
+        );
+
+        foreach ($product_covers as $key => $product_cover) {
+            array_push(
+                $coverArray,
+                [
+                    'key'           =>  $key,
+                    'cover_image'   =>  $product_cover['product_cover'],
+                ]
+            );
+        }
+
+        return $coverArray;
     }
 
     /**
