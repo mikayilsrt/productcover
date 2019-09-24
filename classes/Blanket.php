@@ -28,10 +28,6 @@ class Blanket extends ObjectModel
         $id_shop = $context->shop->id;
 
         $res = parent::add($auto_date, $null_values);
-        // $res &= Db::getInstance()->execute('
-        //     INSERT INTO `' . _DB_PREFIX_ . 'product_cover` (`id_product`, `image`)
-        //     VALUES(' . (int)$this->id_product . ', ' . (string)$this->image . ')'
-        // );
 
         $res &= Db::getInstance()->execute("
             INSERT INTO `" . _DB_PREFIX_ . "product_cover` (`id_product`, `image`)

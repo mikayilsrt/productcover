@@ -59,19 +59,6 @@ class AdminProductCoverController extends ModuleAdminController
 
             if (!empty($productID) && !empty($productImage))
             {
-                // $_registration_allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
-                // $uploader = new Uploader('PRODUCT_COVER_IMAGE');
-                // $uploader->setName(sha1(microtime()));
-                // $uploader->setAcceptTypes($_registration_allowed_extensions)
-                //     ->setCheckFileSize(Uploader::DEFAULT_MAX_SIZE)
-                //     ->setSavePath(dirname(__DIR__) .  '\..\images')
-                //     ->process();
-
-                // echo "<pre>";
-                // var_dump($_FILES['PRODUCT_COVER_IMAGE']);
-                // echo "</pre>";
-                // die();
-
                 $imageFile = $_FILES['PRODUCT_COVER_IMAGE'];
 
                 if (!empty($imageFile['tmp_name']))
