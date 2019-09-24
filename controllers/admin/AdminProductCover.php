@@ -1,5 +1,7 @@
 <?php
 
+use PrestaShop\PrestaShop\Adapter\Configuration;
+
 require_once _PS_MODULE_DIR_  . '/productcover/classes/Blanket.php';
 
 class AdminProductCoverController extends ModuleAdminController
@@ -16,6 +18,12 @@ class AdminProductCoverController extends ModuleAdminController
 
         parent::__construct();
 
+        // add new sql join to display in product cover controller tab.
+        $this->_select .= 'pg.*';
+        $this->_join .= 'JOIN ' . _DB_PREFIX_ . 'product p ON (a.`id_product` = p.id_product)';
+        $this->_join .= 'JOIN ' . _DB_PREFIX_ . 'product_lang pg ON (p.id_product = pg.id_product AND pg.id_lang = ' . Configuration::get('PS_LANG_DEFAULT') . ')';
+        $this->_group .= 'GROUP BY image';
+
         $this->fields_list = [
             'id_product_cover' => [
                 'title' => $this->module->l('ID'),
@@ -25,7 +33,19 @@ class AdminProductCoverController extends ModuleAdminController
             'image' => [
                 'title' =>  $this->module->l('Cover name'),
                 'align' =>  'left'
-            ]
+            ],
+            'id_product' => [
+                'title' =>  $this->module->l('Product ID'),
+                'align' =>  'right'
+            ],
+            'name' => [
+                'title' =>  $this->module->l('Product Name'),
+                'align' =>  'right'
+            ],
+            'id_shop' => [
+                'title' =>  $this->module->l('Shop ID'),
+                'align' =>  'right'
+            ],
         ];
 
         // display action button on each field.
