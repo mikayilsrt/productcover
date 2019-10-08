@@ -105,6 +105,13 @@ class AdminProductCoverController extends ModuleAdminController
         } elseif (Tools::isSubmit('deleteproduct_cover')) {
             $productCoverId = Tools::getValue('id_product_cover');
             $blanket = new Blanket($productCoverId);
+
+            $imageLink = _PS_PROD_IMG_DIR_ . '../scenes/thumbs/' . $blanket->image;
+
+            if (file_exists($imageLink)) {
+                @unlink($imageLink);
+            }
+
             $res = $blanket->delete();
 
             if ($res)
